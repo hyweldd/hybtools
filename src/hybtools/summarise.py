@@ -30,8 +30,8 @@ def create_summary_dataframe(hyb_df):
 
     summary_df = hyb_df[[query_column]].groupby(hyb_df[query_column]).count()
 
-    summary_df.sort_values(by=query_column, ascending=False, inplace=True)
     summary_df.columns = ['hybrid-count']
+    summary_df.sort_values(by='hybrid-count', ascending=False, inplace=True)
     summary_df.reset_index(0, inplace=True)
 
     return(summary_df)
