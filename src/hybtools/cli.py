@@ -32,7 +32,8 @@ FULL_FILEPATH = click.Path(exists=True, dir_okay=False, allow_dash=True, readabl
 
 
 def write_tsv(df):
-    df.to_csv(sys.stdout, sep = '\t', header = False, index = False)
+    tsv = df.to_csv(sep='\t', header=False, index=False)
+    click.echo(tsv)
 
 
 @click.group(context_settings=CONTEXT_SETTINGS)
@@ -45,6 +46,5 @@ def main():
 def summarise(hyb_filepath):
     """Summarise hybrids in a hyb file."""
     commands.summarise(hyb_filepath=hyb_filepath).pipe(write_tsv)
-
 
 
