@@ -24,6 +24,7 @@
 import click
 import sys
 
+from hybtools import __about__
 from hybtools import commands
 
 
@@ -32,12 +33,15 @@ FULL_FILEPATH = click.Path(exists=True, dir_okay=False, allow_dash=True, readabl
 
 
 def write_tsv(df):
+    """Helper function to write a dataframe to stdout as a tsv file."""
     tsv = df.to_csv(sep='\t', header=False, index=False)
     click.echo(tsv)
 
 
 @click.group(context_settings=CONTEXT_SETTINGS)
+@click.version_option(version=__about__.__version__)
 def main():
+    """A suite of command line tools for working with hyb and viennad files."""
     pass
 
 
