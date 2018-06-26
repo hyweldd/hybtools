@@ -1,5 +1,5 @@
 """
-Entrypoint module, in case you use `python -mhybtools`.
+Entry point module, in case you use `python -mhybtools`.
 """
 
 from hybtools.cli import main

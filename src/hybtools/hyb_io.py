@@ -1,4 +1,4 @@
-"""hyb_io.py: hyb file I/O operations for the hybtools package."""
+"""hyb_io.py: hyb file I/O operations."""
 
 # ______________________________________________________________________________
 #

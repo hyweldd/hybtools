@@ -1,4 +1,4 @@
-"""commands.py: Top level commands for the hybtools package."""
+"""commands.py: Top level commands."""
 
 # ______________________________________________________________________________
 #
