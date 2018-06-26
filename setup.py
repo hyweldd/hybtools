@@ -15,6 +15,15 @@ from setuptools import find_packages
 from setuptools import setup
 
 
+__about__ = {}
+with open(join(dirname(__file__), "src", "hybtools", "__about__.py")) as fp:
+    exec(fp.read(), __about__)
+
+
+with open(join(dirname(__file__), 'README.rst'), encoding='utf-8') as fp:
+    __long_description__ = fp.read()
+
+
 def read(*names, **kwargs):
     return io.open(
         join(dirname(__file__), *names),
@@ -23,19 +32,20 @@ def read(*names, **kwargs):
 
 
 setup(
-    name='hybtools',
-    version='0.0.1',
-    license='GPL license',
-    description='Hybtools description.',
-    long_description='A suite of command line tools for working with hyb and viennad files.',
-    author='Hywel Dunn-Davies',
-    author_email='hyweldunndavies@gmail.com',
-    url='https://github.com/hyweldunndavies/hybtools',
+    name=__about__['__name__'],
+    version=__about__['__version__'],
+    license=__about__['__license__'],
+    description=__about__['__description__'],
+    long_description=__long_description__,
+    author=__about__['__author__'],
+    author_email=__about__['__email__'],
+    url=__about__['__url__'],
     packages=find_packages('src'),
     package_dir={'': 'src'},
     py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
     include_package_data=True,
     zip_safe=False,
+    long_description_content_type='text/x-rst',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Biologists',
@@ -47,7 +57,7 @@ setup(
         'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: Utilities',
     ],
-    keywords=[],
+    keywords='bioinformatics CLASH hybrids',
     install_requires=[
         'pytest',
         'click',
