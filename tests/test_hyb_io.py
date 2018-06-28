@@ -31,7 +31,7 @@ def test_load_hyb_dataframe():
     '''Test the effect of loading a hyb dataframe.'''
 
     input_fp = get_test_filepath('test_ua_dg.hyb')
-    test_fp = get_test_filepath('test_ua_dg.hyb_df.pkl')
+    test_fp = get_test_filepath('test_ua_dg.hyb_df.pkl.gz')
 
     result = hyb_io.load_hyb_dataframe(hyb_filepath = input_fp)
     test_hyb_df = load_test_dataframe(test_fp)

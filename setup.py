@@ -4,7 +4,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import io
-import re
+
 from glob import glob
 from os.path import basename
 from os.path import dirname
@@ -16,11 +16,11 @@ from setuptools import setup
 
 
 __about__ = {}
-with open(join(dirname(__file__), "src", "hybtools", "__about__.py")) as fp:
+with io.open(join(dirname(__file__), "src", "hybtools", "__about__.py")) as fp:
     exec(fp.read(), __about__)
 
 
-with open(join(dirname(__file__), 'README.rst'), encoding='utf-8') as fp:
+with io.open(join(dirname(__file__), 'README.rst'), encoding='utf-8') as fp:
     __long_description__ = fp.read()
 
 

@@ -31,7 +31,7 @@ def test_summarise_file():
     '''Test the effect of running the summarise command with a hyb file path given as input.'''
 
     input_fp = get_test_filepath('test_ua_dg.hyb')
-    test_fp = get_test_filepath('test_ua_dg.summary_hyb_df.pkl')
+    test_fp = get_test_filepath('test_ua_dg.summary_hyb_df.pkl.gz')
 
     result = commands.summarise(hyb_filepath = input_fp)
     test_hyb_df = load_test_dataframe(test_fp)

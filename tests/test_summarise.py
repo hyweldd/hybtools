@@ -30,8 +30,8 @@ from tests.testutils import get_test_filepath, load_test_dataframe
 def test_create_summary_dataframe():
     '''Test the create_summary_dataframe function.'''
 
-    input_fp = get_test_filepath('test_ua_dg.hyb_df.pkl')
-    test_fp = get_test_filepath('test_ua_dg.summary_hyb_df.pkl')
+    input_fp = get_test_filepath('test_ua_dg.hyb_df.pkl.gz')
+    test_fp = get_test_filepath('test_ua_dg.summary_hyb_df.pkl.gz')
 
     hyb_df = load_test_dataframe(input_fp)
     test_hyb_df = load_test_dataframe(test_fp)

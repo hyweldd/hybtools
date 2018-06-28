@@ -37,11 +37,11 @@ def get_test_filepath(fn):
 def load_test_file_as_text(fp):
     with open(fp, 'r') as file:
         file_contents=file.read()
-    return(file_contents)
+    return file_contents
 
 
 def load_test_dataframe(fp):
-    return(pd.read_pickle(fp))
+    return pd.read_pickle(fp, compression='gzip')
 
 
 def get_test_data(prefix):
