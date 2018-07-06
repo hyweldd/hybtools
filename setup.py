@@ -59,11 +59,10 @@ setup(
     ],
     keywords='bioinformatics CLASH hybrids',
     install_requires=[
-        'pytest',
         'click',
         'pandas'
     ],
-    extras_require={},
+    extras_require={'test': ['pytest', 'tox']},
     entry_points={
         'console_scripts': [
             'hybtools = hybtools.cli:main',
