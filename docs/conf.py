@@ -16,6 +16,8 @@ import os
 import sys
 sys.path.insert(0, os.path.join(os.path.abspath(os.path.dirname(os.path.dirname(__file__))), 'src'))
 
+from hybtools import __about__
+
 # -- Project information -----------------------------------------------------
 
 project = 'hybtools'
@@ -23,9 +25,9 @@ copyright = '2018, Hywel Dunn-Davies'
 author = 'Hywel Dunn-Davies'
 
 # The short X.Y version
-version = '0.1'
+version = __about__.__shortversion__
 # The full version, including alpha/beta/rc tags
-release = '0.1.1'
+release = __about__.__version__
 
 
 # -- General configuration ---------------------------------------------------
