@@ -5,5 +5,5 @@ API Reference
    :toctree: _autosummary
 
    hybtools.commands
-   hybtools.hyb_io
+   hybtools.io
    hybtools.summarise

@@ -1,4 +1,4 @@
-"""test_commands.py: Unit tests for the python interface."""
+"""Test the commands module."""
 
 # ______________________________________________________________________________
 #
@@ -21,21 +21,126 @@
 # ______________________________________________________________________________
 
 
-import pytest
-
-from hybtools import commands
+from hybtools import commands, summarise
 from tests.testutils import get_test_filepath, load_test_dataframe
 
 
-def test_summarise_file():
-    '''Test the effect of running the summarise command with a hyb file path given as input.'''
+class TestSummarise(object):
+    """Tests for the summarise command."""
 
-    input_fp = get_test_filepath('test_ua_dg.hyb')
-    test_fp = get_test_filepath('test_ua_dg.summary_hyb_df.pkl.gz')
+    # Helper method
+    @staticmethod
+    def run_summarise_test(input_fn, test_fn, **kwargs):
+        """Helper method to run summarise tests with different parameters."""
 
-    result = commands.summarise(hyb_filepath = input_fp)
-    test_hyb_df = load_test_dataframe(test_fp)
+        input_fp = get_test_filepath(input_fn)
+        test_df = load_test_dataframe(test_fn, data_dir_suffix='summarise')
 
-    assert result.equals(test_hyb_df)
+        result = commands.summarise(hyb_filepath=input_fp, **kwargs)
 
+        assert result.equals(test_df)
 
+    # Test methods
+    @staticmethod
+    def test_summarise_with_default_parameters():
+
+        TestSummarise.run_summarise_test(
+            input_fn='test_ua_dg.hyb',
+            test_fn='test_ua_dg.summary_description_directional_c0_hyb_df.pkl.gz'
+        )
+
+    @staticmethod
+    def test_summarise_description_directional_c0():
+
+        TestSummarise.run_summarise_test(
+            input_fn='test_ua_dg.hyb',
+            test_fn='test_ua_dg.summary_description_directional_c0_hyb_df.pkl.gz',
+            level=summarise.SummaryLevel.DESCRIPTION,
+            cutoff=0,
+            non_directional=False,
+            by_fragment=False
+        )
+
+    @staticmethod
+    def test_summarise_name_directional_c0():
+
+        TestSummarise.run_summarise_test(
+            input_fn='test_ua_dg.hyb',
+            test_fn='test_ua_dg.summary_name_directional_c0_hyb_df.pkl.gz',
+            level=summarise.SummaryLevel.NAME,
+            cutoff=0,
+            non_directional=False,
+            by_fragment=False
+        )
+
+    @staticmethod
+    def test_summarise_id_directional_c0():
+
+        TestSummarise.run_summarise_test(
+            input_fn='test_ua_dg.hyb',
+            test_fn='test_ua_dg.summary_id_directional_c0_hyb_df.pkl.gz',
+            level=summarise.SummaryLevel.ID,
+            cutoff=0,
+            non_directional=False,
+            by_fragment=False
+        )
+
+    @staticmethod
+    def test_summarise_biotype_directional_c0():
+
+        TestSummarise.run_summarise_test(
+            input_fn='test_ua_dg.hyb',
+            test_fn='test_ua_dg.summary_biotype_directional_c0_hyb_df.pkl.gz',
+            level=summarise.SummaryLevel.BIOTYPE,
+            cutoff=0,
+            non_directional=False,
+            by_fragment=False
+        )
+
+    @staticmethod
+    def test_summarise_description_nondirectional_c0():
+
+        TestSummarise.run_summarise_test(
+            input_fn='test_ua_dg.hyb',
+            test_fn='test_ua_dg.summary_description_nondirectional_c0_hyb_df.pkl.gz',
+            level=summarise.SummaryLevel.DESCRIPTION,
+            cutoff=0,
+            non_directional=True,
+            by_fragment=False
+        )
+
+    @staticmethod
+    def test_summarise_description_nondirectional_c5():
+
+        TestSummarise.run_summarise_test(
+            input_fn='test_ua_dg.hyb',
+            test_fn='test_ua_dg.summary_description_nondirectional_c5_hyb_df.pkl.gz',
+            level=summarise.SummaryLevel.DESCRIPTION,
+            cutoff=5,
+            non_directional=True,
+            by_fragment=False
+        )
+
+    @staticmethod
+    def test_summarise_description_byfragment_c0():
+
+        TestSummarise.run_summarise_test(
+            input_fn='test_ua_dg.hyb',
+            test_fn='test_ua_dg.summary_description_byfragment_c0_hyb_df.pkl.gz',
+            level=summarise.SummaryLevel.DESCRIPTION,
+            cutoff=0,
+            non_directional=True,
+            by_fragment=True
+        )
+
+    @staticmethod
+    def test_summarise_description_byfragment_c5():
+
+        TestSummarise.run_summarise_test(
+            input_fn='test_ua_dg.hyb',
+            test_fn='test_ua_dg.summary_description_byfragment_c5_hyb_df.pkl.gz',
+            level=summarise.SummaryLevel.DESCRIPTION,
+            cutoff=5,
+            non_directional=True,
+            by_fragment=True
+        )

@@ -1,4 +1,4 @@
-"""test_utils.py: Utilities for unit tests."""
+"""Provide simple utility functions for unit tests."""
 
 # ______________________________________________________________________________
 #
@@ -28,31 +28,27 @@ import pandas as pd
 DATA_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'testdata')
 
 
-def get_test_filepath(fn):
-    test_fp = os.path.join(DATA_DIR, fn)
+def get_test_filepath(fn, data_dir_suffix=''):
+    """Get the full path to a test file with a given name in the testdata directory."""
+    test_fp = os.path.join(DATA_DIR, data_dir_suffix, fn)
     assert os.path.exists(test_fp)
-    return(test_fp)
+    return test_fp
 
 
-def load_test_file_as_text(fp):
+def load_file_contents_as_text(fp):
+    """Return the contents of the specified file as text."""
     with open(fp, 'r') as file:
-        file_contents=file.read()
+        file_contents = file.read()
     return file_contents
 
 
-def load_test_dataframe(fp):
+def load_test_file_contents(fn, data_dir_suffix=''):
+    """Return the contents of a test file with a given name in the testdata directory."""
+    test_fp = get_test_filepath(fn, data_dir_suffix=data_dir_suffix)
+    return load_file_contents_as_text(test_fp)
+
+
+def load_test_dataframe(fn, data_dir_suffix=''):
+    """Return a dataframe that has been stored with a given name in the testdata directory in gzipped pickle format."""
+    fp = get_test_filepath(fn, data_dir_suffix=data_dir_suffix)
     return pd.read_pickle(fp, compression='gzip')
-
-
-def get_test_data(prefix):
-
-    input_fp = get_test_filepath(prefix + '_ua_dg.hyb')
-    input_data = load_test_file_as_text(input_fp)
-
-    test_fp = get_test_filepath(prefix + '_ua_dg.summarise_hyb_file.tab')
-    test_data = load_test_file_as_text(test_fp)
-
-    input_hyb_pkl_fp = get_test_filepath(prefix + '_ua_dg.hyb_df.pkl')
-    input_hyb_pkl = load_test_dataframe(input_hyb_pkl_fp)
-
-    return input_fp, input_data, test_fp, test_data, input_hyb_pkl_fp, input_hyb_pkl

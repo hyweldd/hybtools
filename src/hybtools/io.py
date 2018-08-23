@@ -1,4 +1,4 @@
-"""hyb_io.py: hyb file I/O operations."""
+"""Handle file I/O operations."""
 
 # ______________________________________________________________________________
 #
@@ -21,28 +21,38 @@
 # ______________________________________________________________________________
 
 
+import numpy as np
 import pandas as pd
 import sys
 
 
-hyb_df_columns = ['unique_sequence_id', 'read_sequence', 'predicted_binding_energy', 'bit1-description',
-              'bit1-read_coordinates_start', 'bit1-read_coordinates_stop', 'bit1-transcript_coordinates_start',
-              'bit1-transcript_coordinates_stop', 'bit1-mapping_score', 'bit2-description',
-              'bit2-read_coordinates_start', 'bit2-read_coordinates_stop', 'bit2-transcript_coordinates_start',
-              'bit2-transcript_coordinates_stop', 'bit2-mapping_score', 'annotations', 'comment']
+hyb_df_columns = [
+    'unique_sequence_id', 'read_sequence', 'predicted_binding_energy', 'bit1-description',
+    'bit1-read_coordinates_start', 'bit1-read_coordinates_stop', 'bit1-transcript_coordinates_start',
+    'bit1-transcript_coordinates_stop', 'bit1-mapping_score', 'bit2-description',
+    'bit2-read_coordinates_start', 'bit2-read_coordinates_stop', 'bit2-transcript_coordinates_start',
+    'bit2-transcript_coordinates_stop', 'bit2-mapping_score', 'annotations', 'comment'
+]
 
 
 def load_hyb_dataframe(hyb_filepath):
-    """Import a hyb file as a dataframe."""
+    """Import a hyb file as a dataframe.
 
-    if(hyb_filepath == "-"):
+    :param hyb_filepath: The path to the input hyb file, or "-" to represent standard input.
+    :type hyb_filepath: str
+
+    :returns: A pandas dataframe containing the contents of the hyb file represented by the file path given as input.
+
+    """
+    if hyb_filepath == "-":
         hyb_filepath = sys.stdin
 
-    hyb_df = pd.read_csv(hyb_filepath, sep = '\t', header = None, comment = '#', skip_blank_lines=True)
+    # Using np.genfromtxt here to ensure there is no unwanted type inference
+    hyb_df = pd.DataFrame(np.genfromtxt(hyb_filepath, dtype=str))
 
     assert 15 <= len(hyb_df.columns) <= 17, \
         "Input hyb file must have between 15 and 17 columns. This file has %d columns" % len(hyb_df.columns)
 
     hyb_df.columns = hyb_df_columns[0:len(hyb_df.columns)]
 
-    return(hyb_df)
+    return hyb_df

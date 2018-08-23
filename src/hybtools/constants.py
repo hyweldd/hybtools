@@ -1,4 +1,4 @@
-"""test_commands.py: Unit tests for the hyb_io module."""
+"""Define application constants for the hybtools package."""
 
 # ______________________________________________________________________________
 #
@@ -21,19 +21,29 @@
 # ______________________________________________________________________________
 
 
-import pytest
-
-from hybtools import hyb_io
-from tests.testutils import get_test_filepath, load_test_dataframe
+from aenum import Enum
 
 
-def test_load_hyb_dataframe():
-    '''Test the effect of loading a hyb dataframe.'''
+class HybridType(Enum):
+    """Enumerate the possible hybrid types.
 
-    input_fp = get_test_filepath('test_ua_dg.hyb')
-    test_fp = get_test_filepath('test_ua_dg.hyb_df.pkl.gz')
+    An Enum listing the different hybrid types that are recognised by the filter command.
 
-    result = hyb_io.load_hyb_dataframe(hyb_filepath = input_fp)
-    test_hyb_df = load_test_dataframe(test_fp)
+    """
 
-    assert result.equals(test_hyb_df)
+    ALL = 1
+    INTERMOLECULAR = 2
+    INTRAMOLECULAR = 3
+
+
+class SummaryLevel(Enum):
+    """Enumerate the possible summary levels.
+
+    An Enum listing the different levels at which a hyb file can be summarised.
+
+    """
+
+    DESCRIPTION = 1
+    ID = 2
+    NAME = 3
+    BIOTYPE = 4

@@ -1,4 +1,4 @@
-"""test_summarise.py: Unit tests for the summarise module."""
+"""Test the summarise module."""
 
 # ______________________________________________________________________________
 #
@@ -21,23 +21,124 @@
 # ______________________________________________________________________________
 
 
-import pytest
-
 from hybtools import summarise
-from tests.testutils import get_test_filepath, load_test_dataframe
+from hybtools.constants import SummaryLevel
+
+from tests.testutils import load_test_dataframe
 
 
-def test_create_summary_dataframe():
-    '''Test the create_summary_dataframe function.'''
+# Helper function
+def run_create_summary_dataframe_test(input_fn, test_fn, **kwargs):
+    """Helper function to run create_summary_dataframe tests with different parameters."""
 
-    input_fp = get_test_filepath('test_ua_dg.hyb_df.pkl.gz')
-    test_fp = get_test_filepath('test_ua_dg.summary_hyb_df.pkl.gz')
+    input_df = load_test_dataframe(input_fn)
+    test_df = load_test_dataframe(test_fn, data_dir_suffix='summarise')
 
-    hyb_df = load_test_dataframe(input_fp)
-    test_hyb_df = load_test_dataframe(test_fp)
+    result = summarise.create_summary_dataframe(hyb_df=input_df, **kwargs)
 
-    result = summarise.create_summary_dataframe(hyb_df = hyb_df)
-
-    assert result.equals(test_hyb_df)
+    assert result.equals(test_df)
 
 
+# Test functions
+def test_create_summary_dataframe_with_default_parameters():
+
+    run_create_summary_dataframe_test(
+        input_fn='test_ua_dg.hyb_df.pkl.gz',
+        test_fn='test_ua_dg.summary_description_directional_c0_hyb_df.pkl.gz'
+    )
+
+
+def test_create_summary_dataframe_description_directional_c0():
+
+    run_create_summary_dataframe_test(
+        input_fn='test_ua_dg.hyb_df.pkl.gz',
+        test_fn='test_ua_dg.summary_description_directional_c0_hyb_df.pkl.gz',
+        level=SummaryLevel.DESCRIPTION,
+        cutoff=0,
+        non_directional=False,
+        by_fragment=False
+    )
+
+
+def test_create_summary_dataframe_name_directional_c0():
+
+    run_create_summary_dataframe_test(
+        input_fn='test_ua_dg.hyb_df.pkl.gz',
+        test_fn='test_ua_dg.summary_name_directional_c0_hyb_df.pkl.gz',
+        level=SummaryLevel.NAME,
+        cutoff=0,
+        non_directional=False,
+        by_fragment=False
+    )
+
+
+def test_create_summary_dataframe_id_directional_c0():
+
+    run_create_summary_dataframe_test(
+        input_fn='test_ua_dg.hyb_df.pkl.gz',
+        test_fn='test_ua_dg.summary_id_directional_c0_hyb_df.pkl.gz',
+        level=SummaryLevel.ID,
+        cutoff=0,
+        non_directional=False,
+        by_fragment=False
+    )
+
+
+def test_create_summary_dataframe_biotype_directional_c0():
+
+    run_create_summary_dataframe_test(
+        input_fn='test_ua_dg.hyb_df.pkl.gz',
+        test_fn='test_ua_dg.summary_biotype_directional_c0_hyb_df.pkl.gz',
+        level=SummaryLevel.BIOTYPE,
+        cutoff=0,
+        non_directional=False,
+        by_fragment=False
+    )
+
+
+def test_create_summary_dataframe_description_nondirectional_c0():
+
+    run_create_summary_dataframe_test(
+        input_fn='test_ua_dg.hyb_df.pkl.gz',
+        test_fn='test_ua_dg.summary_description_nondirectional_c0_hyb_df.pkl.gz',
+        level=SummaryLevel.DESCRIPTION,
+        cutoff=0,
+        non_directional=True,
+        by_fragment=False
+    )
+
+
+def test_create_summary_dataframe_description_nondirectional_c5():
+
+    run_create_summary_dataframe_test(
+        input_fn='test_ua_dg.hyb_df.pkl.gz',
+        test_fn='test_ua_dg.summary_description_nondirectional_c5_hyb_df.pkl.gz',
+        level=SummaryLevel.DESCRIPTION,
+        cutoff=5,
+        non_directional=True,
+        by_fragment=False
+    )
+
+
+def test_create_summary_dataframe_description_byfragment_c0():
+
+    run_create_summary_dataframe_test(
+        input_fn='test_ua_dg.hyb_df.pkl.gz',
+        test_fn='test_ua_dg.summary_description_byfragment_c0_hyb_df.pkl.gz',
+        level=SummaryLevel.DESCRIPTION,
+        cutoff=0,
+        non_directional=True,
+        by_fragment=True
+    )
+
+
+def test_create_summary_dataframe_description_byfragment_c5():
+
+    run_create_summary_dataframe_test(
+        input_fn='test_ua_dg.hyb_df.pkl.gz',
+        test_fn='test_ua_dg.summary_description_byfragment_c5_hyb_df.pkl.gz',
+        level=SummaryLevel.DESCRIPTION,
+        cutoff=5,
+        non_directional=True,
+        by_fragment=True
+    )

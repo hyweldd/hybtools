@@ -1,4 +1,4 @@
-"""commands.py: Top level commands."""
+"""Provide a high level python interface for the hybtools package."""
 
 # ______________________________________________________________________________
 #
@@ -21,15 +21,38 @@
 # ______________________________________________________________________________
 
 
-from hybtools.hyb_io import load_hyb_dataframe
+from hybtools.io import load_hyb_dataframe
 from hybtools.summarise import create_summary_dataframe
+from hybtools.constants import SummaryLevel
 
 
-def summarise(hyb_filepath):
-    """Summarise a hyb file."""
+def summarise(hyb_filepath, level=SummaryLevel.DESCRIPTION, cutoff=0, non_directional=False, by_fragment=False):
+    """Summarise a hyb file.
 
+    :param hyb_filepath: The path to the input hyb file, or "-" to represent standard input.
+    :type hyb_filepath: str
+    :param level: The level at which the hyb file should be summarised.
+    :type level: SummaryLevel
+    :param cutoff: The minimum value for which a separate row is included. Rows with values below this cutoff are
+            aggregated into a category named "other".
+    :type cutoff: int
+    :param non_directional: A flag specifying whether to aggregate hybrids involving the same elements
+            in a different order.
+    :type non_directional: bool
+    :param by_fragment: A flag specifying whether to summarise by hybrid fragments rather than hybrids.
+    :type by_fragment: bool
+
+    :returns: A summary of the hyb file at the given file path as a pandas dataframe.
+
+    """
     hyb_df = load_hyb_dataframe(hyb_filepath)
 
-    summary_hyb_df = create_summary_dataframe(hyb_df)
+    summary_hyb_df = create_summary_dataframe(
+        hyb_df=hyb_df,
+        level=level,
+        cutoff=cutoff,
+        non_directional=non_directional,
+        by_fragment=by_fragment
+    )
 
-    return(summary_hyb_df)
+    return summary_hyb_df

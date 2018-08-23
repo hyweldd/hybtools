@@ -1,0 +1,16 @@
+snoRNA:::snoRNA	53
+rRNA:::rRNA	10
+mRNA:::mRNA	9
+rRNA:::snoRNA	8
+rRNA:::mRNA	4
+snoRNA:::mRNA	4
+mRNA:::snoRNA	3
+misc-RNA:::misc-RNA	2
+Mt-rRNA:::snoRNA	1
+mRNA:::processed-transcript	1
+processed-transcript:::processed-transcript	1
+rRNA:::lincRNA	1
+rRNA:::processed-transcript	1
+snRNA:::rRNA	1
+snoRNA:::rRNA	1
+
