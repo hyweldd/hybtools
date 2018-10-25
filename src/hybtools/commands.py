@@ -24,6 +24,7 @@
 from hybtools.io import load_hyb_dataframe
 from hybtools.summarise import create_summary_dataframe
 from hybtools.constants import SummaryLevel
+from hybtools.hybfilter import filter_hyb_dataframe, HybridType
 
 
 def summarise(hyb_filepath, level=SummaryLevel.DESCRIPTION, cutoff=0, non_directional=False, by_fragment=False):
@@ -56,3 +57,55 @@ def summarise(hyb_filepath, level=SummaryLevel.DESCRIPTION, cutoff=0, non_direct
     )
 
     return summary_hyb_df
+
+
+def filter_hyb(
+        hyb_filepath,
+        hybrid_type=HybridType.ALL,
+        dg=None,
+        invert=False,
+        description_filter=None,
+        description_element_types=None,
+        lenient=False,
+        directional=False
+):
+    """Filter a hyb file.
+
+    :param hyb_filepath: The path to the input hyb file, or "-" to represent standard input.
+    :type hyb_filepath: str
+    :param hybrid_type: The type of hybrid to retain. Unless the invert flag is set all rows representing hybrids
+            that are not of the specified type are removed. Passing a hybrid type of ALL results in no hybrid types
+            being excluded.
+    :type hybrid_type: HybridType
+    :param dg: The threshold dG value. Unless the invert flag is set all rows with a dG value above this threshold
+            are removed.
+    :type dg: int
+    :param description_filter: A string representing a filtering criterion to be applied to the hyb DataFrame.
+    :type description_filter: str
+    :param description_element_types: A string describing the types of the elements in the description filter.
+    :type description_element_types: str
+    :param lenient: A flag to indicate that the application of the description filters should be applied leniently.
+    :type lenient: bool
+    :param directional: TODO
+    :type directional: bool
+    :param invert: A flag to indicate that all rows that would be removed based on the preceding filters should be
+            retained, and all rows that would be retained based on the preceding filters should be removed.
+
+    :returns: A pandas DataFrame identical to the input DataFrame, except that the rows matching the filters and
+            flags specified in the input parameters have been removed.
+
+    """
+    hyb_df = load_hyb_dataframe(hyb_filepath)
+
+    filtered_df = filter_hyb_dataframe(
+        hyb_df,
+        hybrid_type=hybrid_type,
+        dg=dg,
+        description_filter=description_filter,
+        description_element_types=description_element_types,
+        lenient=lenient,
+        directional=directional,
+        invert=invert
+    )
+
+    return filtered_df

@@ -186,3 +186,20 @@ class TestSummarise(object):
             use_stdin=False,
             flags=['-l', 'biotype']
         )
+
+
+class TestFilter(object):
+    """Tests for the filter command with various options"""
+
+    @staticmethod
+    def test_filter_file(cli_runner):
+        """Test the effect of running the filter command with a hyb file path given as input, should return all rows."""
+
+        run_cli_test(
+            subcommand='filter',
+            input_fn='test_ua_dg.hyb',
+            test_fn='test_ua_dg.hyb',
+            cli_runner=cli_runner,
+            use_stdin=False,
+            data_dir_suffix=''
+        )

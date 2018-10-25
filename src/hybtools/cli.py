@@ -80,3 +80,69 @@ def summarise(hyb_filepath, level, cutoff, non_directional, by_fragment):
         non_directional=non_directional,
         by_fragment=by_fragment
     ).pipe(write_tsv)
+
+
+@main.command()
+@click.argument('input_filepath', type=FULL_FILEPATH, default='-')
+@click.option('-t', '--type',
+              help='The type of hybrid to filter by. '
+                   'Possible values are all, intra (intramolecular), and inter (intermolecular). Default is all.',
+              default='all')
+@click.option('-g', '--deltaG',
+              help='The delta G threshold to filter by. '
+                   'All hybrids with delta G values below the specified threshold will be included.',
+              type=float)
+@click.option('-f', '--description_filter',
+              # multiple=True,
+              help='A description to filter by. A description is composed of two description elements separated by :::.'
+                    # 'Multiple descriptions can be specified. In this case all lines that match any of the filters will be included.'
+                    'If none are specified all hybrids will be included. You can also specify a co-ordinate range to '
+                   'filter by on each side of the filter. For example snoRNA(1-50):::mRNA(100-125).'
+                    'In addition, if the input file is a viennad file, you can specify the number of mismatches '
+                   'to allow (in curly brackets), then the minimum length of the longest stem in the range '
+                   '(in square brackets), a on each side of the filter. If a number of mismatches'
+                    'is specified, every nucleotide that is not base paired acts like a mismatch. '
+                   'Longest stem length is defined as the length of the longest continuous stretch of base paired '
+                   'nucleotides (with no mismatches or bulges). Can also be a path to a file containing a list.'
+                    'of descriptions to filter by.')
+@click.option('-s', '--description_element_types', default='biotype:::biotype',
+              help='The types of the description elements in the description filters, separated by :::. '
+                   'Default is biotype:::biotype. Can also choose gene_id, transcript_id, gene_name or feature '
+                   'on either side. Descriptions can be long form (e.g. gene_name:::biotype) or short form, '
+                   'where each element is a single letter and no colons are required (e.g. nb). '
+                   'Short forms are n for gene_name,b for biotype, f for feature, i for gene_id, '
+                   'and t for transcript_id.')
+@click.option('-l', '--lenient', is_flag=True,
+              help='Flag to indicate that all hybrids that overlap the specified region of interest '
+                   'should be returned. Default is false, indicating that only hybrids completely contained within '
+                   'the region of interest are returned.')
+@click.option('-d', '--directional', is_flag=True,
+              help='Specifying this option tells the script to filter out hybrids involving the genes matching one or '
+                   'more description filters in a different order.')
+@click.option('-gt', '--remove_gt_pairing', is_flag=True,
+              help='Flag to indicate that gt pairing should not be counted as valid base '
+                   'pairing in viennad files. Default is False.')
+@click.option('-v', '--invert', is_flag=True,
+              help='Select the hybrids that match the filters rather than filtering them out.')
+def filter(input_filepath, type, deltag, invert, description_filter,
+           description_element_types, lenient, directional, remove_gt_pairing):
+    """Filter a hyb file."""
+    from hybtools.hybfilter import HybridType
+
+    if type.lower().startswith('inter'):
+        filter_type = HybridType.INTERMOLECULAR
+    elif type.lower().startswith('intra'):
+        filter_type = HybridType.INTRAMOLECULAR
+    else:
+        filter_type = HybridType.ALL
+
+    commands.filter_hyb(
+        hyb_filepath=input_filepath,
+        hybrid_type=filter_type,
+        dg=deltag,
+        description_filter=description_filter,
+        description_element_types=description_element_types,
+        lenient=lenient,
+        directional=directional,
+        invert=invert
+    ).pipe(write_tsv)
